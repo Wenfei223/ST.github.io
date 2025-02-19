@@ -176,7 +176,6 @@
             document.getElementById('progress').textContent = gameState.shotaProgress;
             document.getElementById('progress-bar').style.width = `${gameState.shotaProgress}%`;
             
-            // 当体力低于30%时闪烁提示
             document.getElementById('stamina-bar').style.animation = 
                 gameState.stamina <= 30 ? 'pulse 1s infinite' : 'none';
         }
@@ -188,7 +187,6 @@
             newEvent.textContent = `第${++gameState.days}天: ${message}`;
             
             log.appendChild(newEvent);
-            // 保持日志数量不超过10条
             while (log.children.length > 10) {
                 log.removeChild(log.firstChild);
             }
@@ -216,6 +214,16 @@
             }
             if (Math.random() < 0.1) { // 10% 概率意识被同化失败
                 alert('😱 你的意识被同化，游戏失败！');
+                resetGame();
+                return true;
+            }
+            if (Math.random() < 0.05) { // 5% 概率被夺舍失败
+                alert('😨 你的身体被夺舍，游戏失败！');
+                resetGame();
+                return true;
+            }
+            if (Math.random() < 0.02) { // 2% 概率变成皮物失败
+                alert('😱 你被变成了皮物，游戏失败！');
                 resetGame();
                 return true;
             }
