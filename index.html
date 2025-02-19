@@ -262,8 +262,24 @@
             checkGameEnd();
         }
 
-        // 初始化游戏
-        updateDisplay();
-    </script>
+      
+        updateTime();  // 初始化显示
+    }
+
+    
+
+    // 禁用右键菜单
+    document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+    });
+
+    // 防止检测到F12
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I') || (e.ctrlKey && e.key === 'U')) {
+            e.preventDefault();
+        }
+    });
+</script>
+
 </body>
 </html>
