@@ -98,7 +98,7 @@
 </head>
 <body>
     <div id="game-container">
-        <h1>✨ 正太做梦模拟器 ✨</h1>
+        <h1>✨ 做梦成为正太模拟器 ✨</h1>
         <div class="status-bar">
             <div class="status-item">
                 <div>体力值: <span id="stamina">100</span></div>
@@ -212,7 +212,7 @@
                 resetGame();
                 return true;
             }
-            if (Math.random() < 0.1) { // 10% 概率意识被同化失败
+            if (Math.random() < 0.01) { // 1% 概率意识被同化失败
                 alert('😱 你的意识被同化，游戏失败！');
                 resetGame();
                 return true;
