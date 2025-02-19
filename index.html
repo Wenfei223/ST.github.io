@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>做梦成为正太模拟器</title>
+    <title>做梦变成正太模拟器</title>
     <style>
         body {
             font-family: 'Microsoft YaHei', sans-serif;
@@ -98,7 +98,7 @@
 </head>
 <body>
     <div id="game-container">
-        <h1>✨ 做梦成为正太模拟器 ✨</h1>
+        <h1>✨ 做梦变成正太模拟器 ✨</h1>
         <div class="status-bar">
             <div class="status-item">
                 <div>体力值: <span id="stamina">100</span></div>
@@ -129,7 +129,7 @@
             stamina: 100,
             shotaProgress: 0,
             days: 0
-        };
+        }
 
         const events = [
             { 
@@ -168,7 +168,7 @@
                 ],
                 effect: { stamina: +10, progress: +2 }
             }
-        ];
+        ]
 
         function updateDisplay() {
             document.getElementById('stamina').textContent = gameState.stamina;
@@ -176,6 +176,7 @@
             document.getElementById('progress').textContent = gameState.shotaProgress;
             document.getElementById('progress-bar').style.width = `${gameState.shotaProgress}%`;
             
+            // 当体力低于30%时闪烁提示
             document.getElementById('stamina-bar').style.animation = 
                 gameState.stamina <= 30 ? 'pulse 1s infinite' : 'none';
         }
@@ -187,6 +188,7 @@
             newEvent.textContent = `第${++gameState.days}天: ${message}`;
             
             log.appendChild(newEvent);
+            // 保持日志数量不超过10条
             while (log.children.length > 10) {
                 log.removeChild(log.firstChild);
             }
@@ -208,4 +210,47 @@
                 return true;
             }
             if (gameState.stamina <= 0) {
-                alert('😴ㅤ
+                alert('😴 体力耗尽，变回普通人了...');
+                resetGame();
+                return true;
+            }
+            return false;
+        }
+
+        function resetGame() {
+            gameState = { stamina: 100, shotaProgress: 0, days: 0 };
+            document.getElementById('event-log').innerHTML = '';
+            updateDisplay();
+        }
+
+        function takeAction(actionType) {
+            if (checkGameEnd()) return;
+
+            const event = getRandomEvent(actionType);
+            gameState.stamina = Math.max(0, Math.min(100, 
+                gameState.stamina + event.effect.stamina));
+            gameState.shotaProgress = Math.max(0, Math.min(100,
+                gameState.shotaProgress + event.effect.progress));
+            
+            addEventMessage(event.message);
+            updateDisplay();
+            
+            // 随机触发特殊事件
+            if (Math.random() < 0.2) {
+                const specialEvents = [
+                    "遇到一只小猫，你的萌度增加了！",
+                    "不小心被当成小孩子摸头了！",
+                    "发现自己的衣服都变大了！"
+                ];
+                addEventMessage(specialEvents[Math.floor(Math.random() * specialEvents.length)]);
+                gameState.shotaProgress += 3;
+            }
+
+            checkGameEnd();
+        }
+
+        // 初始化游戏
+        updateDisplay();
+    </script>
+</body>
+</html>
